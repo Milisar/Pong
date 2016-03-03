@@ -1,6 +1,7 @@
 package Pong;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -89,6 +90,9 @@ public class Main extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		g.setColor(Color.WHITE);
+		g.fillRect(20, 20, 25, 100);
+				
 		
 		g.dispose();
 		bs.show();

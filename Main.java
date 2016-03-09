@@ -81,19 +81,16 @@ public class Main extends Canvas implements Runnable {
 	
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
-		
 		if(bs == null){
-			
 			createBufferStrategy(3);
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		g.setColor(Color.WHITE);
-		g.fillRect(20, 20, 25, 100);
+		//g.setColor(Color.WHITE);
+		//g.fillRect(20, 20, 25, 100);
 				
-		
 		g.dispose();
 		bs.show();
 		
@@ -117,6 +114,6 @@ public class Main extends Canvas implements Runnable {
 		game.start();
 	}
 
-
+	
 	
 }

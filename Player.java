@@ -9,19 +9,33 @@ public class Player {
 	private double y;
 	
 	private BufferedImage player;
-	
+		
 	public Player(double x, double y, Main game){
-		this.x = x;
-		this.y = y;
+		this.setX(x);
+		this.setY(y);
 		
 	}
 	
 	public void tick(){
 		
 	}
-	
-	public void render(Graphics g){
-		g.drawImage(player, (int)x,(int)y, null);
+
+	public double getX() {
+		return x;
 	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	
 	
 }

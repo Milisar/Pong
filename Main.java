@@ -17,12 +17,20 @@ public class Main extends Canvas implements Runnable {
 	public static final int SCALE = 2;
 	public final String TITLE = "Pong";
 	
+	public static int pHEIGHT = 100;
+	public static int pWIDTH = 20;
+	
 	private boolean running = false;
 	private Thread thread;
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
+	private Player p;
 	
+	public void init(){
+		
+		p = new Player(20, 20, this);
+	}
 	private synchronized void start(){
 		if (running)
 			return;
@@ -76,7 +84,7 @@ public class Main extends Canvas implements Runnable {
 		stop();
 	}
 	private void tick() {	
-		
+		p.tick();
 	}
 	
 	private void render(){
@@ -88,9 +96,13 @@ public class Main extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		//g.setColor(Color.WHITE);
-		//g.fillRect(20, 20, 25, 100);
+		g.setColor(Color.WHITE);
+		
 				
+		//player
+		g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
+		g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
+		
 		g.dispose();
 		bs.show();
 		

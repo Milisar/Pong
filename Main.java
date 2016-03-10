@@ -4,10 +4,13 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+
+import Pong.Player;
 
 public class Main extends Canvas implements Runnable {
 	
@@ -17,19 +20,25 @@ public class Main extends Canvas implements Runnable {
 	public static final int SCALE = 2;
 	public final String TITLE = "Pong";
 	
-	public static int pHEIGHT = 100;
-	public static int pWIDTH = 20;
-	
 	private boolean running = false;
 	private Thread thread;
+	
+	private int pHEIGHT = 100;
+	private int pWIDTH = 20;
+	private int bHEIGHT = 10;
+	private int bWIDTH = 10;
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
 	private Player p;
+	private Ball b;
 	
 	public void init(){
+		requestFocus();
+		addKeyListener(new KeyInput(this));
 		
 		p = new Player(20, 20, this);
+		b = new Ball(200 ,200, this);
 	}
 	private synchronized void start(){
 		if (running)
@@ -41,9 +50,9 @@ public class Main extends Canvas implements Runnable {
 	}
 	
 	private synchronized void stop(){
-		if(!running)
+		if(!running){
 			return;
-		
+		}
 		running = false;
 		try {
 			thread.join();
@@ -55,6 +64,7 @@ public class Main extends Canvas implements Runnable {
 	}
 	
 	public void run(){
+		init();
 		long lastTime = System.nanoTime();
 		final double Ticks = 60.0;
 		double ns = 1000000000 / Ticks;
@@ -97,17 +107,43 @@ public class Main extends Canvas implements Runnable {
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		g.setColor(Color.WHITE);
-		
+	
 				
-		//player
+		//player rendering
 		g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
 		g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
+		//ball rendering
+		g.drawRect((int)p.getX(), (int)p.getY(), bWIDTH, bHEIGHT);
+		g.fillRect((int)p.getX(), (int)p.getY(), bWIDTH, bHEIGHT);
 		
 		g.dispose();
 		bs.show();
 		
 	}
+	
+	public void keyPressed(KeyEvent e){
+		int key =e.getKeyCode();
+		
+		if(key == KeyEvent.VK_DOWN){
+			p.setVelY(5);
+		}else if(key == KeyEvent.VK_UP){
+			p.setVelY(-5);
+		}
+		
+	}
+	
+	public void keyReleased(KeyEvent e){
+		int key =e.getKeyCode();
+	
+		
+		if(key == KeyEvent.VK_DOWN){
+			p.setVelY(0);
+		}else if(key == KeyEvent.VK_UP){
+			p.setVelY(0);
+		}
 
+	}
+	
 	public static void main(String args[]){
 		Main game = new Main();
 		

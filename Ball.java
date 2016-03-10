@@ -5,8 +5,8 @@ public class Ball {
 	private double x;
 	private double y;
 	
-	private double bVelX = 10;
-	private double bVelY = 0;
+	private double velX = 1;
+	private double velY = 0;
 	
 	private int bHEIGHT = 10;
 	private int bWIDTH = 10;
@@ -17,7 +17,33 @@ public class Ball {
 	}
 	
 	public void tick(){
-		x-=bVelX;
-		y-=bVelY;
+		x-=velX;
+		y-=velY;
+		
+	}
+
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+		}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public void setVelX(double velX){
+		this.velX = velX;
+	}
+
+	public void setVelY(double velY){
+		this.velY = velY;
 	}
 }

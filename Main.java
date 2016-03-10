@@ -95,6 +95,7 @@ public class Main extends Canvas implements Runnable {
 	}
 	private void tick() {	
 		p.tick();
+		b.tick();
 	}
 	
 	private void render(){
@@ -113,8 +114,8 @@ public class Main extends Canvas implements Runnable {
 		g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
 		g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
 		//ball rendering
-		g.drawRect((int)p.getX(), (int)p.getY(), bWIDTH, bHEIGHT);
-		g.fillRect((int)p.getX(), (int)p.getY(), bWIDTH, bHEIGHT);
+		g.drawRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
+		g.fillRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
 		
 		g.dispose();
 		bs.show();

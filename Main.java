@@ -96,6 +96,17 @@ public class Main extends Canvas implements Runnable {
 	private void tick() {	
 		p.tick();
 		b.tick();
+		
+		//Collision
+		if( (p.getX()+pWIDTH) >= b.getX()&&( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1))&&(b.getY()>=p.getY()-bHEIGHT)){
+			b.setVelX(-b.getVelX());
+			
+		
+			
+		}
+		//if( (p.getX()+pWIDTH) == b.getX()&&( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1))&&(b.getY()>=p.getY()+bHEIGHT)){
+		
+		
 	}
 	
 	private void render(){
@@ -136,7 +147,6 @@ public class Main extends Canvas implements Runnable {
 	public void keyReleased(KeyEvent e){
 		int key =e.getKeyCode();
 	
-		
 		if(key == KeyEvent.VK_DOWN){
 			p.setVelY(0);
 		}else if(key == KeyEvent.VK_UP){

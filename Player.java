@@ -13,8 +13,6 @@ public class Player {
 	
 	private int pHEIGHT = 100;
 	private int pWIDTH = 20;
-	
-	private BufferedImage Player;
 		
 	public Player(double x, double y, Main game){
 		this.x = x;

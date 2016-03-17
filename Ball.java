@@ -5,7 +5,7 @@ public class Ball {
 	private double x;
 	private double y;
 	
-	private double velX = 1;
+	private double velX = 3;
 	private double velY = 0;
 	
 	private int bHEIGHT = 10;
@@ -31,6 +31,14 @@ public class Ball {
 		return y;
 	}
 
+	public double getVelX(){
+		return velX;
+	}
+	
+	public double getVelY(){
+		return velY;
+	}
+	
 	public void setX(double x) {
 		this.x = x;
 		}

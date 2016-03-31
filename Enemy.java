@@ -1,37 +1,31 @@
 package Pong;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-public class Player {
-
+public class Enemy {
+	
 	private double x;
 	private double y;
 	
-	private double velX = 0;
-	private double velY = 0;
+	private double velX;
+	private double velY;
 	
-	private int pHEIGHT = 100;
-	private int pWIDTH = 20;
-		
-	public Player(double x, double y, Main game){
+	private int eHEIGHT = 480;
+	private int eWIDTH = 20;
+	
+	public Enemy(double x, double y, Main game){
 		this.x = x;
 		this.y = y;
-		
 	}
 	
 	public void tick(){
-		x+=velX;
-		y+=velY;
+		//if(y <= 0){
+		//	y = 0;
+		//}
+		//if(y >= 480 - eHEIGHT -13){
+			//y = 480 - eHEIGHT -13;
+		//}	
 		
-		if(y <= 0){
-			y = 0;
-		}
-		if(y >= 480 - pHEIGHT - 13){
-			y = 480 - pHEIGHT - 13;
-		}
 	}
-
+	
 	public double getX() {
 		return x;
 	}

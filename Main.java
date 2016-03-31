@@ -27,11 +27,15 @@ public class Main extends Canvas implements Runnable {
 	private int pWIDTH = 20;
 	private int bHEIGHT = 10;
 	private int bWIDTH = 10;
+	private int eHEIGHT = 480;
+	private int eWIDTH = 20;
+	private double BallHit;
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
 	private Player p;
 	private Ball b;
+	private Enemy e;
 	
 	public void init(){
 		requestFocus();
@@ -39,6 +43,7 @@ public class Main extends Canvas implements Runnable {
 		
 		p = new Player(20, 20, this);
 		b = new Ball(200 ,200, this);
+		e = new Enemy(619, 0, this);
 	}
 	private synchronized void start(){
 		if (running)
@@ -96,13 +101,24 @@ public class Main extends Canvas implements Runnable {
 	private void tick() {	
 		p.tick();
 		b.tick();
+		e.tick();
 		
-		//Collision
+		//BallHit
+		if(p.getY() == b.getY()){
+			BallHit = 0;
+		}
+		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-b.getVelX());
+		//if(BallHit == ){
+			
+		//}
 		}
-		
+		//Collision Ball-Enemy
+		if((e.getX() <= b.getX() + bWIDTH)){
+			b.setVelX(-b.getVelX());
+		}
 	}
 	
 	private void render(){
@@ -123,6 +139,9 @@ public class Main extends Canvas implements Runnable {
 		//ball rendering
 		g.drawRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
 		g.fillRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
+		//enemy rendering
+		g.drawRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
+		g.fillRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
 		
 		g.dispose();
 		bs.show();

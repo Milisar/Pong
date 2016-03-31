@@ -98,14 +98,10 @@ public class Main extends Canvas implements Runnable {
 		b.tick();
 		
 		//Collision
-		if( (p.getX()+pWIDTH) >= b.getX()&&( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1))&&(b.getY()>=p.getY()-bHEIGHT)){
+		if( (p.getX()+pWIDTH) >= b.getX()){
+			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-b.getVelX());
-			
-		
-			
 		}
-		//if( (p.getX()+pWIDTH) == b.getX()&&( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1))&&(b.getY()>=p.getY()+bHEIGHT)){
-		
 		
 	}
 	

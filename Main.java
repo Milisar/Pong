@@ -104,20 +104,30 @@ public class Main extends Canvas implements Runnable {
 		e.tick();
 		
 		//BallHit
-		if(p.getY() == b.getY()){
+		if(b.getY() <= (p.getY() + (pHEIGHT/2))){
+			BallHit = 1;
+		} else if(b.getY() >= (p.getY() + (pHEIGHT/2))&&(b.getY() <= (p.getY() + pHEIGHT))){
+			BallHit = -1;
+		}else if(b.getY() == (p.getY() - (pHEIGHT/2))){
 			BallHit = 0;
 		}
+		
 		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
-			b.setVelX(-b.getVelX());
-		//if(BallHit == ){
-			
-		//}
+			b.setVelX(-(b.getVelX()+2));
+		if(BallHit == 1){
+			b.setVelY(1);
+		}else if(BallHit == 0){
+			b.setVelY(0);
+		}else if(BallHit == -1){
+			b.setVelY(-1);
+			}
 		}
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
 			b.setVelX(-b.getVelX());
+			System.out.println(b.getVelX());
 		}
 	}
 	

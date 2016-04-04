@@ -20,6 +20,14 @@ public class Ball {
 		x-=velX;
 		y-=velY;
 		
+		if(y <= 0){
+			y = 0;
+			velY = -velY;
+		}
+		if(y >= 480 - bHEIGHT - 13){
+			y = 480 - bHEIGHT - 13;
+			velY = -velY;
+		}
 	}
 
 

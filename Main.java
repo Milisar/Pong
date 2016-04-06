@@ -31,6 +31,7 @@ public class Main extends Canvas implements Runnable {
 	private int eWIDTH = 20;
 	private double BallHit;
 	
+	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
 	private Player p;
@@ -41,7 +42,7 @@ public class Main extends Canvas implements Runnable {
 		requestFocus();
 		addKeyListener(new KeyInput(this));
 		
-		p = new Player(20, 100, this);
+		p = new Player(20, 150, this);
 		b = new Ball(200 ,200, this);
 		e = new Enemy(591, 100, this);
 	}
@@ -104,11 +105,13 @@ public class Main extends Canvas implements Runnable {
 		e.tick();
 		
 		//BallHit
-		if(b.getY() <= (p.getY() + (pHEIGHT/2))){
+		if(b.getY() <= (p.getY() + (pHEIGHT/2))){// || b.getY() <= (e.getY() + (eHEIGHT/2))
 			BallHit = 1;
-		} else if(b.getY() >= (p.getY() + (pHEIGHT/2))&&(b.getY() <= (p.getY() + pHEIGHT))){
+			System.out.println(BallHit);
+		} else if(b.getY() >= (p.getY() + (pHEIGHT/2))&&(b.getY() <= (p.getY() + pHEIGHT))){ //|| b.getY() >= (e.getY() + (eHEIGHT/2))&&(b.getY() <= (e.getY() + eHEIGHT))
 			BallHit = -1;
-		}else if(b.getY() == (p.getY() - (pHEIGHT/2))){
+			System.out.println(BallHit);
+		}else if(b.getY() == (p.getY() - (pHEIGHT/2))){ //|| b.getY() == (e.getY() - (eHEIGHT/2))
 			BallHit = 0;
 		}
 		
@@ -126,15 +129,20 @@ public class Main extends Canvas implements Runnable {
 		}
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
-			if((b.getY()+bHEIGHT) <= (e.getY()+eHEIGHT+bHEIGHT-1)&&(b.getY()>=e.getY()-bHEIGHT))
+			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()-eHEIGHT))
 			b.setVelX(-b.getVelX());
-			System.out.println(b.getVelX());
+		if(BallHit == 1){
+			b.setVelY(2);
+		}else if(BallHit == 0){
+			b.setVelY(0);
+		}else if(BallHit == -1){
+			b.setVelY(-2);
+			}
 		}
+		
 		//Enemy AI
-		if((b.getY()) < (e.getY() + eHEIGHT)){
-			e.setVelY(-5);
-		}else if(b.getY() > e.getY()){
-			e.setVelY(5);
+		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
+			e.setVelY(-b.getVelY());
 		}
 	}
 	

@@ -27,7 +27,7 @@ public class Main extends Canvas implements Runnable {
 	private int pWIDTH = 20;
 	private int bHEIGHT = 10;
 	private int bWIDTH = 10;
-	private int eHEIGHT = 480;
+	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
 	private double BallHit;
 	
@@ -41,9 +41,9 @@ public class Main extends Canvas implements Runnable {
 		requestFocus();
 		addKeyListener(new KeyInput(this));
 		
-		p = new Player(20, 20, this);
+		p = new Player(20, 100, this);
 		b = new Ball(200 ,200, this);
-		e = new Enemy(619, 0, this);
+		e = new Enemy(591, 100, this);
 	}
 	private synchronized void start(){
 		if (running)
@@ -117,17 +117,24 @@ public class Main extends Canvas implements Runnable {
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-(b.getVelX()+2));
 		if(BallHit == 1){
-			b.setVelY(1);
+			b.setVelY(2);
 		}else if(BallHit == 0){
 			b.setVelY(0);
 		}else if(BallHit == -1){
-			b.setVelY(-1);
+			b.setVelY(-2);
 			}
 		}
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
+			if((b.getY()+bHEIGHT) <= (e.getY()+eHEIGHT+bHEIGHT-1)&&(b.getY()>=e.getY()-bHEIGHT))
 			b.setVelX(-b.getVelX());
 			System.out.println(b.getVelX());
+		}
+		//Enemy AI
+		if((b.getY()) < (e.getY() + eHEIGHT)){
+			e.setVelY(-5);
+		}else if(b.getY() > e.getY()){
+			e.setVelY(5);
 		}
 	}
 	

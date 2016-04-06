@@ -8,7 +8,7 @@ public class Enemy {
 	private double velX;
 	private double velY;
 	
-	private int eHEIGHT = 480;
+	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
 	
 	public Enemy(double x, double y, Main game){
@@ -17,12 +17,15 @@ public class Enemy {
 	}
 	
 	public void tick(){
-		//if(y <= 0){
-		//	y = 0;
-		//}
-		//if(y >= 480 - eHEIGHT -13){
-			//y = 480 - eHEIGHT -13;
-		//}	
+		x+=velX;
+		y+=velY;
+		
+		if(y <= 0){
+			y = 0;
+		}
+		if(y >= 480 - eHEIGHT -13){
+			y = 480 - eHEIGHT -13;
+		}	
 		
 	}
 	

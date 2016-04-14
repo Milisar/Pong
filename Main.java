@@ -29,7 +29,7 @@ public class Main extends Canvas implements Runnable {
 	private int bWIDTH = 10;
 	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
-	private double BallHit;
+	private double ballHit;
 	
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
@@ -105,25 +105,23 @@ public class Main extends Canvas implements Runnable {
 		e.tick();
 		
 		//BallHit
-		if(b.getY() <= (p.getY() + (pHEIGHT/2))){// || b.getY() <= (e.getY() + (eHEIGHT/2))
-			BallHit = 1;
-			System.out.println(BallHit);
-		} else if(b.getY() >= (p.getY() + (pHEIGHT/2))&&(b.getY() <= (p.getY() + pHEIGHT))){ //|| b.getY() >= (e.getY() + (eHEIGHT/2))&&(b.getY() <= (e.getY() + eHEIGHT))
-			BallHit = -1;
-			System.out.println(BallHit);
-		}else if(b.getY() == (p.getY() - (pHEIGHT/2))){ //|| b.getY() == (e.getY() - (eHEIGHT/2))
-			BallHit = 0;
+		if((p.getY() + (pHEIGHT/2)) <= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160 || (e.getY() + (eHEIGHT/2)) <= ((b.getY() + (bHEIGHT/2))) && b.getX() >= 160){
+			ballHit = -1;
+		}else if((p.getY() + (pHEIGHT/2)) == ((b.getY() + bHEIGHT/2)) && b.getX() <= 160|| (e.getY() + (eHEIGHT/2)) == ((b.getY() + (bHEIGHT/2)))&& b.getX() >= 160){
+			ballHit = 0;
+		}else if((p.getY() + (pHEIGHT/2)) >= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160|| (e.getY() + (eHEIGHT/2)) >= ((b.getY() + (bHEIGHT/2)))&& b.getX() >= 160){
+			ballHit = 1;
 		}
 		
 		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-(b.getVelX()+2));
-		if(BallHit == 1){
+		if(ballHit == 1){
 			b.setVelY(2);
-		}else if(BallHit == 0){
+		}else if(ballHit == 0){
 			b.setVelY(0);
-		}else if(BallHit == -1){
+		}else if(ballHit == -1){
 			b.setVelY(-2);
 			}
 		}
@@ -131,11 +129,11 @@ public class Main extends Canvas implements Runnable {
 		if((e.getX() <= b.getX() + bWIDTH)){
 			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()-eHEIGHT))
 			b.setVelX(-b.getVelX());
-		if(BallHit == 1){
+		if(ballHit == 1){
 			b.setVelY(2);
-		}else if(BallHit == 0){
+		}else if(ballHit == 0){
 			b.setVelY(0);
-		}else if(BallHit == -1){
+		}else if(ballHit == -1){
 			b.setVelY(-2);
 			}
 		}

@@ -93,6 +93,7 @@ public class Main extends Canvas implements Runnable {
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
 				System.out.println(updates + " Ticks, Fps " + frames);
+				
 				updates = 0;
 				frames = 0;
 			}
@@ -104,6 +105,10 @@ public class Main extends Canvas implements Runnable {
 		b.tick();
 		e.tick();
 		
+		if(b.getY() >= p.getY() && (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT)){
+			System.out.println((b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2));
+		}
+		
 		//BallHit
 		if((p.getY() + (pHEIGHT/2)) <= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160 || (e.getY() + (eHEIGHT/2)) <= ((b.getY() + (bHEIGHT/2))) && b.getX() >= 160){
 			ballHit = -1;
@@ -112,6 +117,8 @@ public class Main extends Canvas implements Runnable {
 		}else if((p.getY() + (pHEIGHT/2)) >= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160|| (e.getY() + (eHEIGHT/2)) >= ((b.getY() + (bHEIGHT/2)))&& b.getX() >= 160){
 			ballHit = 1;
 		}
+		
+	//intevnory
 		
 		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){

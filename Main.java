@@ -30,6 +30,7 @@ public class Main extends Canvas implements Runnable {
 	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
 	private double ballHit;
+	private boolean score = false;
 	
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
@@ -100,56 +101,45 @@ public class Main extends Canvas implements Runnable {
 		}
 		stop();
 	}
-	private void tick() {	
+	private void tick() {
+		
+		System.out.println(b.getX());
 		p.tick();
 		b.tick();
 		e.tick();
 		
-		if(b.getY() >= p.getY() && (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT)){
-			System.out.println((b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2));
-		}
-		
 		//BallHit
-		if((p.getY() + (pHEIGHT/2)) <= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160 || (e.getY() + (eHEIGHT/2)) <= ((b.getY() + (bHEIGHT/2))) && b.getX() >= 160){
-			ballHit = -1;
-		}else if((p.getY() + (pHEIGHT/2)) == ((b.getY() + bHEIGHT/2)) && b.getX() <= 160|| (e.getY() + (eHEIGHT/2)) == ((b.getY() + (bHEIGHT/2)))&& b.getX() >= 160){
-			ballHit = 0;
-		}else if((p.getY() + (pHEIGHT/2)) >= ((b.getY() + bHEIGHT/2)) && b.getX() <= 160|| (e.getY() + (eHEIGHT/2)) >= ((b.getY() + (bHEIGHT/2)))&& b.getX() >= 160){
-			ballHit = 1;
-		}
-		
-	//intevnory
+		if(b.getY() >= p.getY() && (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT)){
+			ballHit =(b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2);
+		}		
 		
 		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
-			b.setVelX(-(b.getVelX()+2));
-		if(ballHit == 1){
-			b.setVelY(2);
-		}else if(ballHit == 0){
-			b.setVelY(0);
-		}else if(ballHit == -1){
-			b.setVelY(-2);
+			b.setVelX(-(b.getVelX()+1));
+			b.setVelY(-(ballHit*6)/45);	
 			}
-		}
+
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
 			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()-eHEIGHT))
 			b.setVelX(-b.getVelX());
-		if(ballHit == 1){
-			b.setVelY(2);
-		}else if(ballHit == 0){
-			b.setVelY(0);
-		}else if(ballHit == -1){
-			b.setVelY(-2);
-			}
+			b.setVelY(-(ballHit*6)/45);	
 		}
 		
 		//Enemy AI
 		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
 			e.setVelY(-b.getVelY());
 		}
-	}
+		
+		//Scoring
+		if(b.getX() <= 0 || b.getX() >= 600){
+			score = true;
+		}
+		if(score = true){
+			System.out.println("point");
+		}
+	}	
 	
 	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();

@@ -30,8 +30,8 @@ public class Main extends Canvas implements Runnable {
 	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
 	private double ballHit;
-	private boolean score = false;
-	
+	private double playerScore = 0;
+	private double enemyScore = 0;
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
@@ -102,12 +102,10 @@ public class Main extends Canvas implements Runnable {
 		stop();
 	}
 	private void tick() {
-		
-		System.out.println(b.getX());
 		p.tick();
 		b.tick();
 		e.tick();
-		
+
 		//BallHit
 		if(b.getY() >= p.getY() && (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT)){
 			ballHit =(b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2);
@@ -117,28 +115,47 @@ public class Main extends Canvas implements Runnable {
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-(b.getVelX()+1));
-			b.setVelY(-(ballHit*6)/45);	
+			b.setVelY(-(ballHit*7)/45);	
 			}
 
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
-			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()-eHEIGHT))
+			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()))
 			b.setVelX(-b.getVelX());
-			b.setVelY(-(ballHit*6)/45);	
+			b.setVelY(-(ballHit*7)/45);	
 		}
 		
 		//Enemy AI
 		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
 			e.setVelY(-b.getVelY());
 		}
+		if(e.getVelY() >= 3){
+			e.setVelY(3);
+		}
+		if(e.getVelY() <= -3){
+			e.setVelY(-3);
+		}
 		
-		//Scoring
-		if(b.getX() <= 0 || b.getX() >= 600){
-			score = true;
+		//Score Player
+		if(b.getX() >= 605){
+			playerScore ++;
+			b.setVelX(2);
+			b.setVelY(0);
+			b.setX(200);
+			b.setY(200);
+			System.out.println("playerscore =" + playerScore);
 		}
-		if(score = true){
-			System.out.println("point");
+		
+		//Score Enemy
+		if(b.getX() <=0){
+			enemyScore ++;
+			b.setVelX(2);
+			b.setVelY(0);
+			b.setX(200);
+			b.setY(200);
+			System.out.println("enemyscore =" + enemyScore);
 		}
+		
 	}	
 	
 	private void render(){
@@ -176,7 +193,12 @@ public class Main extends Canvas implements Runnable {
 		}else if(key == KeyEvent.VK_UP){
 			p.setVelY(-5);
 		}
-		
+		if(key == KeyEvent.VK_ESCAPE){
+			b.setVelX(2);
+			b.setVelY(0);
+			b.setX(200);
+			b.setY(200);
+		}
 	}
 	
 	public void keyReleased(KeyEvent e){

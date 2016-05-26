@@ -28,6 +28,7 @@ public class Ball {
 			y = 480 - bHEIGHT - 13;
 			velY = -velY;
 		}
+		
 	}
 
 

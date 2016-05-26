@@ -26,12 +26,7 @@ public class Enemy {
 		if(y >= 480 - eHEIGHT -13){
 			y = 480 - eHEIGHT -13;
 		}	
-		if(velY >= 5){
-			velY = 5;
-		}
-		if(velY <= -5){
-			velY = -5;
-		}
+		
 	}
 	
 	public double getX() {
@@ -40,6 +35,14 @@ public class Enemy {
 
 	public double getY() {
 		return y;
+	}
+	
+	public double getVelX(){
+		return velX;
+	}
+	
+	public double getVelY(){
+		return velY;
 	}
 
 	public void setX(double x) {
@@ -50,13 +53,6 @@ public class Enemy {
 		this.y = y;
 	}
 	
-	public double getVelX(double velX){
-		return velX;
-	}
-	
-	public double getVelY(double velY){
-		return velY;
-	}
 	
 	public void setVelX(double velX){
 		this.velX = velX;

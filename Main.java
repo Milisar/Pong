@@ -3,6 +3,7 @@ package Pong;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
@@ -13,6 +14,9 @@ import javax.swing.JFrame;
 import Pong.Player;
 
 public class Main extends Canvas implements Runnable {
+	
+	private double playerScore = 0;
+	private double enemyScore = 0;
 	
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 320;
@@ -30,8 +34,7 @@ public class Main extends Canvas implements Runnable {
 	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
 	private double ballHit;
-	private double playerScore = 0;
-	private double enemyScore = 0;
+	
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
@@ -115,25 +118,32 @@ public class Main extends Canvas implements Runnable {
 		if( (p.getX()+pWIDTH) >= b.getX()){
 			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
 			b.setVelX(-(b.getVelX()+1));
-			b.setVelY(-(ballHit*7)/45);	
+			b.setVelY(-(ballHit*8)/45);	
 			}
 
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
 			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()))
 			b.setVelX(-b.getVelX());
-			b.setVelY(-(ballHit*7)/45);	
+			b.setVelY(-(ballHit*8)/45);	
 		}
 		
 		//Enemy AI
 		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
-			e.setVelY(-b.getVelY());
+			e.setVelY(velY);
+			//			e.setVelY(-b.getVelY());
+//			if(b.getY() + bHEIGHT /2 > e.getY() +eHEIGHT /2 && b.getVelY() >= -0.1 && b.getY() <= e.getY()){
+//				e.setVelY(-0.5 * b.getVelY());
+//			}else if(b.getY() + bHEIGHT /2 < e.getY() +eHEIGHT /2 && b.getVelY() >= 0.1 && (b.getY() + bHEIGHT) >= (e.getY() + eHEIGHT)){
+//				e.setVelY(-0.5 * b.getVelY());
+//			}
+		
 		}
-		if(e.getVelY() >= 3){
-			e.setVelY(3);
+		if(e.getVelY() >= 5){
+			e.setVelY(5);
 		}
-		if(e.getVelY() <= -3){
-			e.setVelY(-3);
+		if(e.getVelY() <= -5){
+			e.setVelY(-5);
 		}
 		
 		//Score Player
@@ -179,6 +189,11 @@ public class Main extends Canvas implements Runnable {
 		//enemy rendering
 		g.drawRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
 		g.fillRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
+		//score
+		g.setFont(new Font("default", Font.BOLD, 16));
+		String s = (int)playerScore + "    -    " + (int)enemyScore;
+		g.drawString(s, (getWidth() / 2) - (s.length() * g.getFont().getSize()) / 4, 20);
+		
 		
 		g.dispose();
 		bs.show();

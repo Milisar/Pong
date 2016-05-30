@@ -130,15 +130,9 @@ public class Main extends Canvas implements Runnable {
 		
 		//Enemy AI
 		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
-			e.setVelY(velY);
-			//			e.setVelY(-b.getVelY());
-//			if(b.getY() + bHEIGHT /2 > e.getY() +eHEIGHT /2 && b.getVelY() >= -0.1 && b.getY() <= e.getY()){
-//				e.setVelY(-0.5 * b.getVelY());
-//			}else if(b.getY() + bHEIGHT /2 < e.getY() +eHEIGHT /2 && b.getVelY() >= 0.1 && (b.getY() + bHEIGHT) >= (e.getY() + eHEIGHT)){
-//				e.setVelY(-0.5 * b.getVelY());
-//			}
-		
+			e.setVelY(-b.getVelY());
 		}
+		
 		if(e.getVelY() >= 5){
 			e.setVelY(5);
 		}

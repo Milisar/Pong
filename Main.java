@@ -108,29 +108,36 @@ public class Main extends Canvas implements Runnable {
 		p.tick();
 		b.tick();
 		e.tick();
+		System.out.println(ballHit);
 
 		//BallHit
-		if(b.getY() >= p.getY() && (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT)){
+		if(b.getY() + bHEIGHT >= p.getY() && (b.getY()) <= (p.getY()+pHEIGHT)){
 			ballHit =(b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2);
-		}		
+		}else if(b.getY() + bHEIGHT >= e.getY() && (b.getY()) <= (e.getY() +eHEIGHT)){
+			ballHit =(b.getY()+bHEIGHT/2)-(e.getY()+eHEIGHT/2);
+		}
 		
 		//Collision Ball-Player
 		if( (p.getX()+pWIDTH) >= b.getX()){
-			if( (b.getY()+bHEIGHT) <= (p.getY()+pHEIGHT+bHEIGHT-1)&&(b.getY()>=p.getY()-bHEIGHT))
+			if(b.getY() +bHEIGHT >= p.getY() && b.getY() <= p.getY() + pHEIGHT )
 			b.setVelX(-(b.getVelX()+1));
-			b.setVelY(-(ballHit*8)/45);	
+			b.setVelY((ballHit*b.getVelX())/45);	
 			}
 
 		//Collision Ball-Enemy
 		if((e.getX() <= b.getX() + bWIDTH)){
-			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY()>=e.getY()))
-			b.setVelX(-b.getVelX());
-			b.setVelY(-(ballHit*8)/45);	
+			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY() + bHEIGHT - 1 >=e.getY()))
+			b.setVelX(-(b.getVelX()));
+			b.setVelY(-(ballHit*b.getVelX())/45);	
 		}
 		
 		//Enemy AI
 		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
 			e.setVelY(-b.getVelY());
+		}else if(b.getY() + bHEIGHT > e.getY() + eHEIGHT){
+			e.setVelY(-5);
+		}else if(b.getY() < e.getY()){
+			e.setVelY(5);
 		}
 		
 		if(e.getVelY() >= 5){

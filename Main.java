@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import Pong.Player;
-
 public class Main extends Canvas implements Runnable {
 	
 	private double playerScore = 0;
@@ -26,6 +24,7 @@ public class Main extends Canvas implements Runnable {
 	
 	private boolean running = false;
 	private Thread thread;
+	private boolean inMenu = false;
 	
 	private int pHEIGHT = 100;
 	private int pWIDTH = 20;
@@ -46,7 +45,7 @@ public class Main extends Canvas implements Runnable {
 		requestFocus();
 		addKeyListener(new KeyInput(this));
 		
-		p = new Player(20, 150, this);
+		p = new Player(20, getHeight()/2 - pHEIGHT, this);
 		b = new Ball(200 ,200, this);
 		e = new Enemy(591, 100, this);
 	}
@@ -88,11 +87,11 @@ public class Main extends Canvas implements Runnable {
 			lastTime = now;
 			if(delta >= 1){
 				tick();
+				render();
+				frames++;
 				updates++;
 				delta--;
 			}
-			render();
-			frames++;
 			
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
@@ -108,7 +107,6 @@ public class Main extends Canvas implements Runnable {
 		p.tick();
 		b.tick();
 		e.tick();
-		System.out.println(ballHit);
 
 		//BallHit
 		if(b.getY() + bHEIGHT >= p.getY() && (b.getY()) <= (p.getY()+pHEIGHT)){
@@ -118,17 +116,15 @@ public class Main extends Canvas implements Runnable {
 		}
 		
 		//Collision Ball-Player
-		if( (p.getX()+pWIDTH) >= b.getX()){
-			if(b.getY() +bHEIGHT >= p.getY() && b.getY() <= p.getY() + pHEIGHT )
-			b.setVelX(-(b.getVelX()+1));
-			b.setVelY((ballHit*b.getVelX())/45);	
-			}
+		if( (p.getX()+pWIDTH) >= b.getX() && (b.getY() +bHEIGHT >= p.getY() && b.getY() <= p.getY() + pHEIGHT)){
+				b.setVelX(-(b.getVelX()+1));
+				b.setVelY((ballHit*b.getVelX())/45);	
+		}
 
 		//Collision Ball-Enemy
-		if((e.getX() <= b.getX() + bWIDTH)){
-			if(b.getY() <= (e.getY()+eHEIGHT)&&(b.getY() + bHEIGHT - 1 >=e.getY()))
-			b.setVelX(-(b.getVelX()));
-			b.setVelY(-(ballHit*b.getVelX())/45);	
+		if((e.getX() <= b.getX() + bWIDTH) && (b.getY() <= (e.getY()+eHEIGHT)&&(b.getY() + bHEIGHT - 1 >=e.getY()))){
+				b.setVelX(-(b.getVelX()));
+				b.setVelY(-(ballHit*b.getVelX())/45);	
 		}
 		
 		//Enemy AI
@@ -148,7 +144,7 @@ public class Main extends Canvas implements Runnable {
 		}
 		
 		//Score Player
-		if(b.getX() >= 605){
+		if(b.getX() >= e.getX() + 10){
 			playerScore ++;
 			b.setVelX(2);
 			b.setVelY(0);
@@ -158,7 +154,7 @@ public class Main extends Canvas implements Runnable {
 		}
 		
 		//Score Enemy
-		if(b.getX() <=0){
+		if(b.getX() <= 10){
 			enemyScore ++;
 			b.setVelX(2);
 			b.setVelY(0);
@@ -180,7 +176,7 @@ public class Main extends Canvas implements Runnable {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		g.setColor(Color.WHITE);
 	
-				
+		if(!inMenu)	{	
 		//player rendering
 		g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
 		g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
@@ -194,7 +190,7 @@ public class Main extends Canvas implements Runnable {
 		g.setFont(new Font("default", Font.BOLD, 16));
 		String s = (int)playerScore + "    -    " + (int)enemyScore;
 		g.drawString(s, (getWidth() / 2) - (s.length() * g.getFont().getSize()) / 4, 20);
-		
+		}
 		
 		g.dispose();
 		bs.show();
@@ -245,7 +241,5 @@ public class Main extends Canvas implements Runnable {
 		
 		game.start();
 	}
-
-	
 	
 }

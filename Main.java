@@ -23,8 +23,8 @@ public class Main extends Canvas implements Runnable {
 	public final String TITLE = "Pong";
 	
 	private boolean running = false;
+	private boolean inMenu = true;
 	private Thread thread;
-	private boolean inMenu = false;
 	
 	private int pHEIGHT = 100;
 	private int pWIDTH = 20;
@@ -32,8 +32,10 @@ public class Main extends Canvas implements Runnable {
 	private int bWIDTH = 10;
 	private int eHEIGHT = 100;
 	private int eWIDTH = 20;
-	private double ballHit;
-	
+	private double menuCursor = 0;
+	private double singleplayer = 0;
+	private double multiplayer = 0;
+	private double ballHit;	
 	
 	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 	
@@ -128,21 +130,22 @@ public class Main extends Canvas implements Runnable {
 		}
 		
 		//Enemy AI
-		if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
-			e.setVelY(-b.getVelY());
-		}else if(b.getY() + bHEIGHT > e.getY() + eHEIGHT){
-			e.setVelY(-5);
-		}else if(b.getY() < e.getY()){
-			e.setVelY(5);
-		}
+		if(singleplayer == 1){
+			if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
+				e.setVelY(-b.getVelY());
+			}else if(b.getY() + bHEIGHT > e.getY() + eHEIGHT){
+				e.setVelY(-5);
+			}else if(b.getY() < e.getY()){
+				e.setVelY(5);
+			}
 		
-		if(e.getVelY() >= 5){
+			if(e.getVelY() >= 5){
 			e.setVelY(5);
+			}
+			if(e.getVelY() <= -5){
+				e.setVelY(-5);
+			}
 		}
-		if(e.getVelY() <= -5){
-			e.setVelY(-5);
-		}
-		
 		//Score Player
 		if(b.getX() >= e.getX() + 10){
 			playerScore ++;
@@ -177,19 +180,29 @@ public class Main extends Canvas implements Runnable {
 		g.setColor(Color.WHITE);
 	
 		if(!inMenu)	{	
-		//player rendering
-		g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
-		g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
-		//ball rendering
-		g.drawRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
-		g.fillRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
-		//enemy rendering
-		g.drawRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
-		g.fillRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
-		//score
-		g.setFont(new Font("default", Font.BOLD, 16));
-		String s = (int)playerScore + "    -    " + (int)enemyScore;
-		g.drawString(s, (getWidth() / 2) - (s.length() * g.getFont().getSize()) / 4, 20);
+			//player rendering
+			g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
+			g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
+			//ball rendering
+			g.drawRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
+			g.fillRect((int)b.getX(), (int)b.getY(), bWIDTH, bHEIGHT);
+			//enemy rendering
+			g.drawRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
+			g.fillRect((int)e.getX(), (int)e.getY(), eWIDTH, eHEIGHT);
+			//score
+			g.setFont(new Font("default", Font.BOLD, 16));
+			String s = (int)playerScore + "    -    " + (int)enemyScore;
+			g.drawString(s, (getWidth() / 2) - (s.length() * g.getFont().getSize()) / 4, 20);
+		}else{
+			//menu
+			g.setFont(new Font("default", Font.BOLD, 16));
+			String d ="Singleplayer";
+			String a ="MultiPlayer";
+			g.drawString(d, (getWidth()/2), getHeight()/2 - 20);
+			g.drawString(a, (getWidth()/2), getHeight()/2 + 20);
+			if(menuCursor == 0){
+
+			}
 		}
 		
 		g.dispose();
@@ -197,13 +210,39 @@ public class Main extends Canvas implements Runnable {
 		
 	}
 	
-	public void keyPressed(KeyEvent e){
-		int key =e.getKeyCode();
+	public void keyPressed(KeyEvent q){
+		int key =q.getKeyCode();
 		
 		if(key == KeyEvent.VK_DOWN){
-			p.setVelY(5);
+			if(!inMenu){
+				if(singleplayer == 1){
+					p.setVelY(5);
+				}else if(multiplayer == 1){
+					e.setVelY(5);
+				}
+			}else{
+				menuCursor ++;
+			}
 		}else if(key == KeyEvent.VK_UP){
-			p.setVelY(-5);
+			if(!inMenu){
+				if(singleplayer == 1){
+					p.setVelY(-5);
+				}else if(multiplayer == 1){
+					e.setVelY(-5);
+				}		
+			}else{
+				menuCursor --;
+			}
+		}
+		if(key == KeyEvent.VK_W){
+			if(multiplayer == 1){
+				p.setVelY(-5);
+			}
+		}
+		if(key == KeyEvent.VK_S){
+			if(multiplayer == 1){
+				p.setVelY(5);
+			}
 		}
 		if(key == KeyEvent.VK_ESCAPE){
 			b.setVelX(2);
@@ -211,17 +250,47 @@ public class Main extends Canvas implements Runnable {
 			b.setX(200);
 			b.setY(200);
 		}
+		if(key == KeyEvent.VK_ENTER){
+			if(inMenu){
+				if(menuCursor == 0){
+					singleplayer = 1;
+					multiplayer = 0;
+					inMenu = false;
+				}else if(menuCursor == 1){
+					multiplayer = 1;
+					singleplayer = 0;
+					inMenu = false;
+				}
+			}
+		}
 	}
 	
-	public void keyReleased(KeyEvent e){
-		int key =e.getKeyCode();
+	public void keyReleased(KeyEvent q){
+		int key =q.getKeyCode();
 	
 		if(key == KeyEvent.VK_DOWN){
-			p.setVelY(0);
+			if(multiplayer == 1){
+				e.setVelY(0);
+			}else if(singleplayer == 1){
+				p.setVelY(0);
+			}
 		}else if(key == KeyEvent.VK_UP){
-			p.setVelY(0);
+			if(multiplayer == 1){
+				e.setVelY(0);
+			}else if(singleplayer == 1){
+				p.setVelY(0);
+			}
 		}
-
+		if(key == KeyEvent.VK_W){
+			if(multiplayer == 1){
+				p.setVelY(0);
+			}
+		}
+		if(key == KeyEvent.VK_S){
+			if(multiplayer == 1){
+				p.setVelY(0);
+			}
+		}
 	}
 	
 	public static void main(String args[]){

@@ -24,6 +24,7 @@ public class Main extends Canvas implements Runnable {
 	
 	private boolean running = false;
 	private boolean inMenu = true;
+	private boolean inHelp = false;
 	private Thread thread;
 	
 	private int pHEIGHT = 100;
@@ -47,9 +48,9 @@ public class Main extends Canvas implements Runnable {
 		requestFocus();
 		addKeyListener(new KeyInput(this));
 		
-		p = new Player(20, getHeight()/2 - pHEIGHT, this);
-		b = new Ball(200 ,200, this);
-		e = new Enemy(591, 100, this);
+		p = new Player(20, getHeight()/2 - pHEIGHT/2, this);
+		b = new Ball(getWidth()/2 - bWIDTH/2 ,getHeight()/2 - bHEIGHT/2, this);
+		e = new Enemy(getWidth()- eWIDTH -20, getHeight()/2 - eHEIGHT/2, this);
 	}
 	private synchronized void start(){
 		if (running)
@@ -106,10 +107,12 @@ public class Main extends Canvas implements Runnable {
 		stop();
 	}
 	private void tick() {
-		p.tick();
-		b.tick();
-		e.tick();
-
+		if(!inMenu){
+			p.tick();
+			b.tick();
+			e.tick();
+		}
+		
 		//BallHit
 		if(b.getY() + bHEIGHT >= p.getY() && (b.getY()) <= (p.getY()+pHEIGHT)){
 			ballHit =(b.getY()+bHEIGHT/2)-(p.getY()+pHEIGHT/2);
@@ -131,9 +134,9 @@ public class Main extends Canvas implements Runnable {
 		
 		//Enemy AI
 		if(singleplayer == 1){
-			if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2){
+			if(b.getY() + bHEIGHT / 2 != e.getY() + eHEIGHT / 2 && b.getY() <= e.getY() + eHEIGHT && b.getY() + bHEIGHT >= e.getY()){
 				e.setVelY(-b.getVelY());
-			}else if(b.getY() + bHEIGHT > e.getY() + eHEIGHT){
+			}else if(b.getY() > e.getY() + eHEIGHT){
 				e.setVelY(-5);
 			}else if(b.getY() < e.getY()){
 				e.setVelY(5);
@@ -151,9 +154,10 @@ public class Main extends Canvas implements Runnable {
 			playerScore ++;
 			b.setVelX(2);
 			b.setVelY(0);
-			b.setX(200);
-			b.setY(200);
-			System.out.println("playerscore =" + playerScore);
+			b.setX(getWidth()/2 - bWIDTH/2);
+			b.setY(getHeight()/2 - bHEIGHT/2);
+			p.setY(getHeight()/2 - pHEIGHT/2);
+			e.setY(getHeight()/2 - eHEIGHT/2);
 		}
 		
 		//Score Enemy
@@ -161,9 +165,10 @@ public class Main extends Canvas implements Runnable {
 			enemyScore ++;
 			b.setVelX(2);
 			b.setVelY(0);
-			b.setX(200);
-			b.setY(200);
-			System.out.println("enemyscore =" + enemyScore);
+			b.setX(getWidth()/2 - bWIDTH/2);
+			b.setY(getHeight()/2 - bHEIGHT/2);
+			p.setY(getHeight()/2 - pHEIGHT/2);
+			e.setY(getHeight()/2 - eHEIGHT/2);
 		}
 		
 	}	
@@ -179,7 +184,7 @@ public class Main extends Canvas implements Runnable {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		g.setColor(Color.WHITE);
 	
-		if(!inMenu)	{	
+		if(!inMenu && !inHelp)	{	
 			//player rendering
 			g.drawRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
 			g.fillRect((int)p.getX(), (int)p.getY(), pWIDTH, pHEIGHT);
@@ -193,16 +198,36 @@ public class Main extends Canvas implements Runnable {
 			g.setFont(new Font("default", Font.BOLD, 16));
 			String s = (int)playerScore + "    -    " + (int)enemyScore;
 			g.drawString(s, (getWidth() / 2) - (s.length() * g.getFont().getSize()) / 4, 20);
-		}else{
+		}else if(inMenu){
 			//menu
 			g.setFont(new Font("default", Font.BOLD, 16));
 			String d ="Singleplayer";
 			String a ="MultiPlayer";
-			g.drawString(d, (getWidth()/2), getHeight()/2 - 20);
-			g.drawString(a, (getWidth()/2), getHeight()/2 + 20);
+			String h ="Controls";
+			String c ="->";
+			g.drawString(d, (getWidth()/2), getHeight()/2 - 40);
+			g.drawString(a, (getWidth()/2), getHeight()/2);
+			g.drawString(h, (getWidth()/2), getHeight()/2 + 40);
 			if(menuCursor == 0){
-
+				g.drawString(c, ((getWidth()/2) - 50), (getHeight()/2) - 40);
+			}else if(menuCursor == 1){
+				g.drawString(c, ((getWidth()/2) - 50), (getHeight()/2));
+			}else if(menuCursor == 2){
+				g.drawString(c, ((getWidth()/2) - 50), (getHeight()/2) + 40);
 			}
+		}else if(inHelp){
+			g.setFont(new Font("default", Font.BOLD, 16));
+			String a ="Singelplayer          Up Arrow         Down Arrow          Esc";
+			String b ="Multiplayer p1           W key                 S key                Esc";
+			String f ="Multiplayer p2        Up Arrow         Down Arrow         Esc";
+			String c ="Up";
+			String d = "Down";
+			String e ="Reset";
+			g.drawString(b, 20, 250);
+			g.drawString(a, 20, 150);
+			g.drawString(f, 20, 350);
+			g.drawString(c, 190, 50);
+			
 		}
 		
 		g.dispose();
@@ -221,7 +246,11 @@ public class Main extends Canvas implements Runnable {
 					e.setVelY(5);
 				}
 			}else{
-				menuCursor ++;
+				if(menuCursor == 2){
+					menuCursor = 0;
+				}else{
+					menuCursor ++;
+				}
 			}
 		}else if(key == KeyEvent.VK_UP){
 			if(!inMenu){
@@ -231,7 +260,11 @@ public class Main extends Canvas implements Runnable {
 					e.setVelY(-5);
 				}		
 			}else{
-				menuCursor --;
+				if(menuCursor == 0){
+					menuCursor = 2;
+				}else{
+					menuCursor --;
+				}
 			}
 		}
 		if(key == KeyEvent.VK_W){
@@ -247,8 +280,10 @@ public class Main extends Canvas implements Runnable {
 		if(key == KeyEvent.VK_ESCAPE){
 			b.setVelX(2);
 			b.setVelY(0);
-			b.setX(200);
-			b.setY(200);
+			b.setX(getWidth()/2 - bWIDTH/2);
+			b.setY(getHeight()/2 - bHEIGHT/2);
+			p.setY(getHeight()/2 - pHEIGHT/2);
+			e.setY(getHeight()/2 - eHEIGHT/2);
 		}
 		if(key == KeyEvent.VK_ENTER){
 			if(inMenu){
@@ -260,6 +295,11 @@ public class Main extends Canvas implements Runnable {
 					multiplayer = 1;
 					singleplayer = 0;
 					inMenu = false;
+				}else if(menuCursor == 2){
+					multiplayer = 0;
+					singleplayer = 0;
+					inMenu = false;
+					inHelp = true;
 				}
 			}
 		}

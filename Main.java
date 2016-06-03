@@ -217,16 +217,23 @@ public class Main extends Canvas implements Runnable {
 			}
 		}else if(inHelp){
 			g.setFont(new Font("default", Font.BOLD, 16));
-			String a ="Singelplayer          Up Arrow         Down Arrow          Esc";
+			String a ="Singleplayer          Up Arrow         Down Arrow          Esc";
 			String b ="Multiplayer p1           W key                 S key                Esc";
 			String f ="Multiplayer p2        Up Arrow         Down Arrow         Esc";
 			String c ="Up";
-			String d = "Down";
+			String d ="Down";
 			String e ="Reset";
-			g.drawString(b, 20, 250);
-			g.drawString(a, 20, 150);
-			g.drawString(f, 20, 350);
-			g.drawString(c, 190, 50);
+			String h ="Backspace to go";
+			String i ="back to menu";
+			g.drawString(b, 75, 275);
+			g.drawString(a, 75, 175);
+			g.drawString(f, 75, 375);
+			g.drawString(c, 245, 75);
+			g.drawString(d, 375, 75);
+			g.drawString(e, 490, 75);
+			g.drawString(h, 65, 75);
+			g.drawString(i, 65, 100);
+
 			
 		}
 		
@@ -278,12 +285,14 @@ public class Main extends Canvas implements Runnable {
 			}
 		}
 		if(key == KeyEvent.VK_ESCAPE){
+			if(!inMenu && !inHelp){
 			b.setVelX(2);
 			b.setVelY(0);
 			b.setX(getWidth()/2 - bWIDTH/2);
 			b.setY(getHeight()/2 - bHEIGHT/2);
 			p.setY(getHeight()/2 - pHEIGHT/2);
 			e.setY(getHeight()/2 - eHEIGHT/2);
+			}
 		}
 		if(key == KeyEvent.VK_ENTER){
 			if(inMenu){
@@ -329,6 +338,20 @@ public class Main extends Canvas implements Runnable {
 		if(key == KeyEvent.VK_S){
 			if(multiplayer == 1){
 				p.setVelY(0);
+			}
+		}
+		if(key == KeyEvent.VK_BACK_SPACE){
+			if(!inMenu){
+			inMenu = true;
+			singleplayer = 0;
+			multiplayer = 0;
+			inHelp = false;
+			b.setVelX(2);
+			b.setVelY(0);
+			b.setX(getWidth()/2 - bWIDTH/2);
+			b.setY(getHeight()/2 - bHEIGHT/2);
+			p.setY(getHeight()/2 - pHEIGHT/2);
+			e.setY(getHeight()/2 - eHEIGHT/2);
 			}
 		}
 	}
